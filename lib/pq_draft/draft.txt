@@ -1,0 +1,120 @@
+//INSERT INTO DB
+	/*
+	   result, err:= db.Exec("INSERT INTO room (id, room_num, stage, last_cleaned, ocupied) VALUES (uuid_generate_v4(), $1, $2, CURRENT_TIMESTAMP, false)", 207, 2)
+
+	   if err != nil {
+	   	panic(err)
+	   }
+	   fmt.Println(result.LastInsertId())
+	   fmt.Println(result.RowsAffected())
+	*/
+
+	//INSERT INTO DB RETURNING UUID
+	/*
+	var id uuid.UUID
+	db.QueryRow("INSERT INTO room (id, room_num, stage, last_cleaned, ocupied) VALUES (uuid_generate_v4(), $1, $2, CURRENT_TIMESTAMP, false) returning id", 207, 2).Scan(&id)
+	fmt.Println(id)
+ */
+
+ //READ FROM DB
+ /*
+	rows, err := db.Query("select * from room")
+	if err != nil{
+		panic(err)
+	}
+
+	defer rows.Close()
+	rooms := []room{}
+
+	for rows.Next(){
+		r := room{}
+		err := rows.Scan(&r.id, &r.room_num, &r.stage, &r.last_cleaned, &r.ocupied)
+		if err != nil{
+			fmt.Println(err)
+			continue
+		}
+		rooms = append(rooms, r)
+
+	}
+	for _, r:= range rooms{
+		fmt.Println(r.id, r.room_num, r.stage, r.last_cleaned, r.ocupied)
+	}
+
+ */
+
+ // UPDATE IN DB
+
+ /*
+	result, err := db.Exec("update room set stage = $1 where room_num < 200", 1)
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Println(result.RowsAffected())
+ */
+
+ // DELETE FROM DB
+ /*
+	result, err := db.Exec("delete from room where room_num = $1", 206)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(result.RowsAffected())
+ */
+
+
+
+ /////////////////////////////////////////////////////////////////////////////////////////////
+
+	// ТЕСТ СОЗДАНИЯ ГОСТЯ
+	/*
+		id, err := CreateGuest(db, "Feruz", "rakhimov", 202)
+		if err != nil {
+			fmt.Printf("error: %v\n", err)
+		}
+
+		fmt.Println(id)
+
+	*/
+
+	// TECT CHECK IN
+	/*
+		result, err := CheckInGuest(db, 204, "Feruz")
+
+		if err != nil {
+			fmt.Printf("error: %v\n", err)
+		}
+		fmt.Println(result)
+	*/
+
+	// ТЕСТ CHECK OUT
+	/*
+		result, err := CheckOutGuest(db, 204)
+
+		if err != nil {
+			fmt.Printf("error: %v\n", err)
+		}
+		fmt.Println(result)
+
+	*/
+
+	// TECT УДАЛЕНИЯ ГОСТЯ (deleted_at = CURRENT_TIMESTAMP)
+	/*
+		result, err := DeleteGuest(db, "Feruz")
+
+		if err != nil {
+			fmt.Printf("error: %v\n", err)
+		}
+		fmt.Println(result)
+	*/
+
+	// ТЕСТ СМЕНЫ НОМЕРА ГОСТЯ
+	/*
+	   result, err := ChangeGuestRoom(db, 203, "Feruz")
+
+	   	if err != nil {
+	   		fmt.Printf("error: %v\n", err)
+	   	}
+	   	fmt.Println(result)
+	*/
+
